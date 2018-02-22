@@ -45,3 +45,23 @@ body{
 div.app-content{
   padding: 1em;
 }
+
+div.prep-room{
+  display: flex;
+  flex-direction: row;
+}
+div.fighter-list{
+  flex: 2 1 initial;
+  display: flex;
+  flex-wrap: wrap;
+}
+div.fighter-creation{
+  flex: 1 1 initial;
+}
+
+div.fighter-editor{
+  padding: 0.5em;
+  border-radius: 5px;
+  border: solid black 1px;
+  background-color: #3a963e;
+}

@@ -5,34 +5,11 @@ import {
     Route,
     NavLink
 } from 'react-router-dom'
-import axios from 'axios';
 import Home from './components/home';
 import PrepRoom from './components/prep_room';
 import FightRoom from './components/fight_room';
 
 class App extends Component{
-
-    constructor(props){
-        super(props)
-        this.state = {
-            fighters: []
-        }
-    }
-
-    componentDidMount(){
-        this.fetchFightersInfo();
-    }
-    fetchFightersInfo(){
-        const self = this;
-        axios.get('fighter/index')
-            .then(function (response) {
-                const data = response.data;
-                self.setState({fighters: data});
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
 
     render(){
         return (

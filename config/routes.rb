@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   get 'fighter/index'
+  post 'fighter/', to: 'fighter#create'
+  post 'fighter/:fighter_id', to: 'fighter#update'
+  post 'fighter/:fighter_id/delete', to: 'fighter#delete'
 
   get 'arena/index'
 

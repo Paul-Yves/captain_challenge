@@ -1631,10 +1631,6 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = __webpack_require__(72);
 
-var _axios = __webpack_require__(34);
-
-var _axios2 = _interopRequireDefault(_axios);
-
 var _home = __webpack_require__(101);
 
 var _home2 = _interopRequireDefault(_home);
@@ -1658,34 +1654,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var App = function (_Component) {
     _inherits(App, _Component);
 
-    function App(props) {
+    function App() {
         _classCallCheck(this, App);
 
-        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
-
-        _this.state = {
-            fighters: []
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
     }
 
     _createClass(App, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            this.fetchFightersInfo();
-        }
-    }, {
-        key: "fetchFightersInfo",
-        value: function fetchFightersInfo() {
-            var self = this;
-            _axios2.default.get('fighter/index').then(function (response) {
-                var data = response.data;
-                self.setState({ fighters: data });
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
-    }, {
         key: "render",
         value: function render() {
             return _react2.default.createElement(
@@ -25083,11 +25058,25 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _index = __webpack_require__(34);
+
+var _index2 = _interopRequireDefault(_index);
+
+var _fighter_card = __webpack_require__(105);
+
+var _fighter_card2 = _interopRequireDefault(_fighter_card);
+
+var _editor = __webpack_require__(106);
+
+var _editor2 = _interopRequireDefault(_editor);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25100,22 +25089,68 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var PrepRoom = function (_Component) {
     _inherits(PrepRoom, _Component);
 
-    function PrepRoom() {
+    function PrepRoom(props) {
         _classCallCheck(this, PrepRoom);
 
-        return _possibleConstructorReturn(this, (PrepRoom.__proto__ || Object.getPrototypeOf(PrepRoom)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (PrepRoom.__proto__ || Object.getPrototypeOf(PrepRoom)).call(this, props));
+
+        _this.state = {
+            fighters: [],
+            selected_fighter: null
+        };
+        return _this;
     }
 
     _createClass(PrepRoom, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.fetchFightersInfo();
+        }
+    }, {
+        key: "fetchFightersInfo",
+        value: function fetchFightersInfo() {
+            var self = this;
+            _index2.default.get('fighter/index').then(function (response) {
+                var data = response.data;
+                self.setState({ fighters: data });
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
+            var _this2 = this;
+
             return _react2.default.createElement(
                 "div",
-                null,
+                { className: "prep-room" },
                 _react2.default.createElement(
-                    "p",
-                    null,
-                    "Create, edit or delete fighters"
+                    "div",
+                    { className: "fighter-list" },
+                    this.state.fighters.map(function (fighter) {
+                        return _react2.default.createElement(_fighter_card2.default, _extends({}, fighter, { key: fighter.id,
+                            onEdit: function onEdit() {
+                                return _this2.setState({ selected_fighter: fighter });
+                            },
+                            onDeleted: function onDeleted() {
+                                return _this2.fetchFightersInfo();
+                            } }));
+                    })
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "fighter-creation" },
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: function onClick() {
+                                return _this2.setState({ selected_fighter: null });
+                            } },
+                        "New fighter"
+                    ),
+                    _react2.default.createElement(_editor2.default, { fighter: this.state.selected_fighter, onSaved: function onSaved() {
+                            return _this2.fetchFightersInfo();
+                        } })
                 )
             );
         }
@@ -25179,6 +25214,310 @@ var FightRoom = function (_Component) {
 }(_react.Component);
 
 exports.default = FightRoom;
+
+/***/ }),
+/* 104 */,
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(54);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _axios = __webpack_require__(34);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Component to display basic information about a fighter
+ */
+var FighterCard = function (_Component) {
+    _inherits(FighterCard, _Component);
+
+    function FighterCard() {
+        _classCallCheck(this, FighterCard);
+
+        return _possibleConstructorReturn(this, (FighterCard.__proto__ || Object.getPrototypeOf(FighterCard)).apply(this, arguments));
+    }
+
+    _createClass(FighterCard, [{
+        key: 'delete',
+        value: function _delete() {
+            var self = this;
+            _axios2.default.post('fighter/' + this.props.id + '/delete', { authenticity_token: window._token }).then(function (response) {
+                self.props.onDeleted();
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'fighter-card' },
+                _react2.default.createElement(
+                    'h2',
+                    null,
+                    this.props.name
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'stats' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Life: ',
+                        this.props.max_life
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Strength: ',
+                        this.props.strength
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Ability: ',
+                        this.props.ability
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Speed: ',
+                        this.props.speed
+                    )
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: function onClick() {
+                            return _this2.props.onEdit();
+                        } },
+                    'Edit'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: function onClick() {
+                            return _this2.delete();
+                        } },
+                    'Delete'
+                )
+            );
+        }
+    }]);
+
+    return FighterCard;
+}(_react.Component);
+
+FighterCard.propTypes = {
+    id: _propTypes2.default.number.isRequired,
+    name: _propTypes2.default.string.isRequired,
+    max_life: _propTypes2.default.number.isRequired,
+    strength: _propTypes2.default.number.isRequired,
+    ability: _propTypes2.default.number.isRequired,
+    speed: _propTypes2.default.number.isRequired,
+    onEdit: _propTypes2.default.func.isRequired,
+    onDeleted: _propTypes2.default.func.isRequired
+};
+
+exports.default = FighterCard;
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _axios = __webpack_require__(34);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _propTypes = __webpack_require__(54);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Component to create or edit a fighter
+ */
+var FighterEditor = function (_Component) {
+    _inherits(FighterEditor, _Component);
+
+    function FighterEditor(props) {
+        _classCallCheck(this, FighterEditor);
+
+        var _this = _possibleConstructorReturn(this, (FighterEditor.__proto__ || Object.getPrototypeOf(FighterEditor)).call(this, props));
+
+        _this.state = _this.baseStateFromProps(props);
+        return _this;
+    }
+
+    _createClass(FighterEditor, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            this.setState(this.baseStateFromProps(nextProps));
+        }
+    }, {
+        key: 'baseStateFromProps',
+        value: function baseStateFromProps(props) {
+            var points = 25;
+            if (props.fighter) {
+                points = 115 - (props.fighter.strength + props.fighter.ability + props.fighter.speed);
+            }
+            return {
+                name: props.fighter && props.fighter.name || "Captain new",
+                max_life: props.fighter && props.fighter.max_life || 12,
+                strength: props.fighter && props.fighter.strength || 30,
+                ability: props.fighter && props.fighter.ability || 30,
+                speed: props.fighter && props.fighter.speed || 30,
+                points: points
+            };
+        }
+    }, {
+        key: 'handleChange',
+        value: function handleChange(value, attribute) {
+            var state = Object.assign({}, this.state);
+            state[attribute] = parseInt(value);
+            var points = 115 - (state.strength + state.ability + state.speed);
+            if (points >= 0) {
+                state.points = points;
+                this.setState(state);
+            }
+        }
+    }, {
+        key: 'save',
+        value: function save() {
+            var self = this;
+            var route = this.props.fighter ? 'fighter/' + this.props.fighter.id : 'fighter';
+            var params = Object.assign({ authenticity_token: window._token }, this.state);
+            _axios2.default.post(route, params).then(function (response) {
+                self.props.onSaved();
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var title = this.props.fighter ? 'Fighter edition' : 'Fighter creation';
+            return _react2.default.createElement(
+                'div',
+                { className: 'fighter-editor' },
+                _react2.default.createElement(
+                    'h2',
+                    null,
+                    title
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'stats' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Name:',
+                        _react2.default.createElement('input', { value: this.state.name, onChange: function onChange(e) {
+                                return _this2.setState({ name: e.target.value });
+                            }, type: 'text' })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Remaining points: ',
+                        this.state.points
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Life: ',
+                        this.state.max_life
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Strength:',
+                        _react2.default.createElement('input', { onChange: function onChange(e) {
+                                return _this2.handleChange(e.target.value, 'strength');
+                            }, value: this.state.strength, type: 'number' })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Ability:',
+                        _react2.default.createElement('input', { onChange: function onChange(e) {
+                                return _this2.handleChange(e.target.value, 'ability');
+                            }, value: this.state.ability, type: 'number' })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stat' },
+                        'Speed:',
+                        _react2.default.createElement('input', { onChange: function onChange(e) {
+                                return _this2.handleChange(e.target.value, 'speed');
+                            }, value: this.state.speed, type: 'number' })
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.save.bind(this) },
+                        'Save'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return FighterEditor;
+}(_react.Component);
+
+FighterEditor.propTypes = {
+    fighter: _propTypes2.default.object,
+    onSaved: _propTypes2.default.func.isRequired
+};
+
+exports.default = FighterEditor;
 
 /***/ })
 /******/ ]);
