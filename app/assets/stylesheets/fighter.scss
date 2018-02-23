@@ -12,3 +12,10 @@ $card-color: #ffd66f;
   background-color: $card-color;
   min-width: 14em;
 }
+
+.fighter-card.selected{
+  border: solid green 2px;
+}
+.fighter-card.selected h2{
+  color: green;
+}

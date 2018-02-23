@@ -2,6 +2,9 @@ class Fighter < ApplicationRecord
   before_create :reset_current_life
   validate :creation_valid, on: :create
 
+  has_many :victories, class_name: 'Fight', foreign_key: 'winner_id'
+  has_many :losses, class_name: 'Fight', foreign_key: 'looser_id'
+
   def reset_current_life
     self.life = self.max_life
   end
