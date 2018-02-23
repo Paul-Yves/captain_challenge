@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios/index";
-import FighterCard from "./fighter/fighter_card";
+import EditableFighter from "./fighter/editable_fighter";
 import FighterEditor from "./fighter/editor";
 
 class PrepRoom extends Component{
@@ -31,7 +31,7 @@ class PrepRoom extends Component{
             <div className="fighter-list">
                 {
                     this.state.fighters.map((fighter)=>
-                        <FighterCard {...fighter} key={fighter.id}
+                        <EditableFighter {...fighter} key={fighter.id}
                             onEdit={()=>this.setState({selected_fighter: fighter})}
                             onDeleted={()=>this.fetchFightersInfo()}/>
                     )
