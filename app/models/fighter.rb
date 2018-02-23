@@ -16,7 +16,9 @@ class Fighter < ApplicationRecord
   private
 
   def creation_valid
-    self.max_life == 12 && self.ability + self.strength + self.speed <= 115
+    unless self.max_life == 12 && self.ability + self.strength + self.speed <= 115
+      errors.add(:base, 'invalid caracs for fighter creation')
+    end
   end
 
 end
