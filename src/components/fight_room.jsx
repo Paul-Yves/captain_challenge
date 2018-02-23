@@ -19,7 +19,7 @@ class FightRoom extends Component{
         axios.get('fighter/index')
             .then(function (response) {
                 const data = response.data;
-                self.setState({fighters: data});
+                self.setState({fighters: data, selected: []});
             })
             .catch(function (error) {
                 console.log(error);
@@ -43,6 +43,15 @@ class FightRoom extends Component{
         if (this.state.selected.length !== 2){
             return this.setState({warning: "A fight must occur between to warriors, no less, no more"});
         }
+        const self = this;
+        axios.post('fight', {authenticity_token: window._token, fighters: self.state.selected})
+            .then(function (response) {
+                self.fetchFightersInfo();
+                alert('Winner : '+response.data.winner.name);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
 
     }
     render(){
@@ -56,7 +65,7 @@ class FightRoom extends Component{
                     )
                 }
             </div>
-            <button onClick={()=>this.fight()}>Launch fight</button>
+            <button onClick={()=>this.fight()}>Launch fight</button> <span className="warning">{this.state.warning}</span>
         </div>
     }
 }

@@ -9,6 +9,10 @@ class Fighter < ApplicationRecord
     self.life = self.max_life
   end
 
+  def attack_works
+    rand(100) < self.ability
+  end
+
   private
 
   def creation_valid

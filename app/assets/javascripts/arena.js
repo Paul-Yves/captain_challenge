@@ -25606,7 +25606,7 @@ var FightRoom = function (_Component) {
             var self = this;
             _index2.default.get('fighter/index').then(function (response) {
                 var data = response.data;
-                self.setState({ fighters: data });
+                self.setState({ fighters: data, selected: [] });
             }).catch(function (error) {
                 console.log(error);
             });
@@ -25633,6 +25633,13 @@ var FightRoom = function (_Component) {
             if (this.state.selected.length !== 2) {
                 return this.setState({ warning: "A fight must occur between to warriors, no less, no more" });
             }
+            var self = this;
+            _index2.default.post('fight', { authenticity_token: window._token, fighters: self.state.selected }).then(function (response) {
+                self.fetchFightersInfo();
+                alert('Winner : ' + response.data.winner.name);
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }, {
         key: "render",
@@ -25659,6 +25666,12 @@ var FightRoom = function (_Component) {
                             return _this2.fight();
                         } },
                     "Launch fight"
+                ),
+                " ",
+                _react2.default.createElement(
+                    "span",
+                    { className: "warning" },
+                    this.state.warning
                 )
             );
         }
@@ -25724,6 +25737,8 @@ var SelectableFighter = function (_FighterCard) {
             var _this2 = this;
 
             var className = this.props.selected ? "fighter-card selected" : "fighter-card";
+            var total_fights = this.props.victories + this.props.losses;
+            var ratio = total_fights === 0 ? 'N/A' : Math.round(100 * this.props.victories / total_fights) + "%";
             return _react2.default.createElement(
                 'div',
                 { className: className },
@@ -25736,14 +25751,8 @@ var SelectableFighter = function (_FighterCard) {
                 _react2.default.createElement(
                     'div',
                     null,
-                    'Victories: ',
-                    this.props.victories
-                ),
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    'Losses: ',
-                    this.props.losses
+                    'Victory ratio: ',
+                    ratio
                 ),
                 _react2.default.createElement(
                     'button',

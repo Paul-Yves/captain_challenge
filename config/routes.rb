@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   post 'fighter/:fighter_id', to: 'fighter#update'
   post 'fighter/:fighter_id/delete', to: 'fighter#delete'
 
+  post 'fight/', to: 'fight#create'
+
   get 'arena/index'
 
   root 'arena#index'
