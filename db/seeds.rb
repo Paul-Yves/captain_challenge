@@ -7,6 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-Fighter.create(name: 'Captain Jack Sparrow', max_life: 12, ability: 45, strength: 35, speed: 35)
-Fighter.create(name: 'Captain America', max_life: 12, ability: 40, strength: 40, speed: 35)
-Fighter.create(name: 'Captain Contrat', max_life: 15, ability: 60, strength: 60, speed: 60)
+Fighter.create!(name: 'Captain Jack Sparrow', max_life: 12, ability: 45, strength: 35, speed: 35)
+Fighter.create!(name: 'Captain America', max_life: 12, ability: 40, strength: 40, speed: 35)
+contrat = Fighter.create!(name: 'Captain Contrat', max_life: 12, ability: 30, strength: 30, speed: 30)
+contrat.update!(max_life: 15, ability: 60, strength: 60, speed: 60)
