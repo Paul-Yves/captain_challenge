@@ -41,7 +41,7 @@ class FightRoom extends Component{
                 console.log(error);
             });
     }
-    toggleSelectFighter(fighter, equipments){
+    toggleSelectFighter(fighter){
         let selected = this.state.selected;
         const position = selected.indexOf(fighter);
         if (position >= 0){
@@ -53,7 +53,6 @@ class FightRoom extends Component{
                 selected = selected.concat(fighter);
             }
         }
-        this.equipmentMap[fighter.id] = equipments.map((eq)=>eq.id);
         this.setState({selected, warning: null});
     }
     fight(){
@@ -61,7 +60,9 @@ class FightRoom extends Component{
             return this.setState({warning: "A fight must occur between to warriors, no less, no more"});
         }
         const self = this;
-        const fighters = self.state.selected.map(fighter => Object.assign({equipment: self.equipmentMap[fighter.id]}, fighter));
+        const fighters = self.state.selected.map(fighter =>
+            Object.assign({equipment: self.equipmentMap[fighter.id] || []}, fighter)
+        );
         axios.post('fight', {authenticity_token: window._token, fighters})
             .then(function (response) {
                 self.fetchFightersInfo();
@@ -81,7 +82,8 @@ class FightRoom extends Component{
                             this.state.fighters.map((fighter)=>
                                 <SelectableFighter {...fighter} key={fighter.id}
                                                    selected={this.state.selected.indexOf(fighter)>=0}
-                                                   onSelect={(equipments)=>this.toggleSelectFighter(fighter, equipments)}/>
+                                                   onChangeEquipment={(equipments)=> this.equipmentMap[fighter.id] = equipments}
+                                                   onSelect={()=>this.toggleSelectFighter(fighter)}/>
                             )
                         }
                     </div>

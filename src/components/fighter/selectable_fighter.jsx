@@ -30,7 +30,9 @@ class SelectableFighter extends FighterCard{
         const hand = this.state.equipment.reduce((hand, eq) => hand + eq.hand_slot, equipment.hand_slot);
         const body = this.state.equipment.reduce((hand, eq) => hand + eq.body_slot, equipment.body_slot);
         if (hand <= 2 && body <= 1){
-            this.setState({equipment: this.state.equipment.concat(equipment)});
+            const equipments = this.state.equipment.concat(equipment);
+            this.setState({equipment: equipments});
+            this.props.onChangeEquipment(equipments.map((eq)=>eq.id));
         }
     }
 
@@ -49,7 +51,7 @@ class SelectableFighter extends FighterCard{
                 }
             </div>
             <button onClick={()=>this.setState({equipment: []})}>Clear equipment</button>
-            <button onClick={()=>this.props.onSelect(this.state.equipment)}>Select</button>
+            <button onClick={()=>this.props.onSelect()}>Select</button>
         </div>)
     }
 }
@@ -64,6 +66,7 @@ SelectableFighter.propTypes = {
     selected: PropTypes.bool.isRequired,
     victories: PropTypes.number.isRequired,
     losses: PropTypes.number.isRequired,
-    onSelect: PropTypes.func.isRequired, //takes list of equipment as argument
+    onSelect: PropTypes.func.isRequired,
+    onChangeEquipment: PropTypes.func.isRequired, //expect as arg a list of id corresponding to equipment
 };
 export default DropTarget('EQUIPMENT', cardTarget, collect)(SelectableFighter);

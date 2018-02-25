@@ -25636,7 +25636,7 @@ var FightRoom = function (_Component) {
         }
     }, {
         key: "toggleSelectFighter",
-        value: function toggleSelectFighter(fighter, equipments) {
+        value: function toggleSelectFighter(fighter) {
             var selected = this.state.selected;
             var position = selected.indexOf(fighter);
             if (position >= 0) {
@@ -25648,9 +25648,6 @@ var FightRoom = function (_Component) {
                     selected = selected.concat(fighter);
                 }
             }
-            this.equipmentMap[fighter.id] = equipments.map(function (eq) {
-                return eq.id;
-            });
             this.setState({ selected: selected, warning: null });
         }
     }, {
@@ -25661,7 +25658,7 @@ var FightRoom = function (_Component) {
             }
             var self = this;
             var fighters = self.state.selected.map(function (fighter) {
-                return Object.assign({ equipment: self.equipmentMap[fighter.id] }, fighter);
+                return Object.assign({ equipment: self.equipmentMap[fighter.id] || [] }, fighter);
             });
             _index2.default.post('fight', { authenticity_token: window._token, fighters: fighters }).then(function (response) {
                 self.fetchFightersInfo();
@@ -25690,8 +25687,11 @@ var FightRoom = function (_Component) {
                             this.state.fighters.map(function (fighter) {
                                 return _react2.default.createElement(_selectable_fighter2.default, _extends({}, fighter, { key: fighter.id,
                                     selected: _this2.state.selected.indexOf(fighter) >= 0,
-                                    onSelect: function onSelect(equipments) {
-                                        return _this2.toggleSelectFighter(fighter, equipments);
+                                    onChangeEquipment: function onChangeEquipment(equipments) {
+                                        return _this2.equipmentMap[fighter.id] = equipments;
+                                    },
+                                    onSelect: function onSelect() {
+                                        return _this2.toggleSelectFighter(fighter);
                                     } }));
                             })
                         ),
@@ -25802,7 +25802,11 @@ var SelectableFighter = function (_FighterCard) {
                 return hand + eq.body_slot;
             }, equipment.body_slot);
             if (hand <= 2 && body <= 1) {
-                this.setState({ equipment: this.state.equipment.concat(equipment) });
+                var equipments = this.state.equipment.concat(equipment);
+                this.setState({ equipment: equipments });
+                this.props.onChangeEquipment(equipments.map(function (eq) {
+                    return eq.id;
+                }));
             }
         }
     }, {
@@ -25854,7 +25858,7 @@ var SelectableFighter = function (_FighterCard) {
                 _react2.default.createElement(
                     'button',
                     { onClick: function onClick() {
-                            return _this2.props.onSelect(_this2.state.equipment);
+                            return _this2.props.onSelect();
                         } },
                     'Select'
                 )
@@ -25875,7 +25879,8 @@ SelectableFighter.propTypes = {
     selected: _propTypes2.default.bool.isRequired,
     victories: _propTypes2.default.number.isRequired,
     losses: _propTypes2.default.number.isRequired,
-    onSelect: _propTypes2.default.func.isRequired //takes list of equipment as argument
+    onSelect: _propTypes2.default.func.isRequired,
+    onChangeEquipment: _propTypes2.default.func.isRequired //expect as arg a list of id corresponding to equipment
 };
 exports.default = (0, _reactDnd.DropTarget)('EQUIPMENT', cardTarget, collect)(SelectableFighter);
 
