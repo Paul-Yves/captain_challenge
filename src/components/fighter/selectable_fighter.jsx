@@ -38,20 +38,21 @@ class SelectableFighter extends FighterCard{
 
     render(){
         const { canDrop, isOver, connectDropTarget } = this.props;
-        let className = this.props.selected ? "fighter-card selected" : "fighter-card";
+        const className = this.props.selected ? "fighter-card selected" : "fighter-card";
+        const selectLabel = this.props.selected ? "Unselect" : "Select";
         const total_fights = this.props.victories + this.props.losses;
-        let ratio = total_fights === 0 ? 'N/A' : Math.round(100*this.props.victories / total_fights)+"%";
+        const ratio = total_fights === 0 ? 'N/A' : Math.round(100*this.props.victories / total_fights)+"%";
         return connectDropTarget(<div className={className}>
             <h2>{this.props.name}</h2>
             {this.renderStatsBlock()}
             <div>Victory ratio: {ratio}</div>
-            <div>
+            <div className="equipment-list">
                 {this.state.equipment.map((equipment, idx) =>
                     <div className="equipment" key={equipment.id+"_"+idx}>{equipment.name}</div>)
                 }
             </div>
             <button onClick={()=>this.setState({equipment: []})}>Clear equipment</button>
-            <button onClick={()=>this.props.onSelect()}>Select</button>
+            <button onClick={()=>this.props.onSelect()}>{selectLabel}</button>
         </div>)
     }
 }

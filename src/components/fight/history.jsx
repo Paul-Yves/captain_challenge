@@ -2,10 +2,12 @@ import React, { Component } from "react";
 
 class History extends Component{
     renderFight(fight){
+        const win_eq = fight.win_equipment ? fight.win_equipment : 'naked';
+        const loose_eq = fight.loose_equipment ? fight.loose_equipment : 'naked';
         return <div key={fight.id} className="fight-history">
             <div>Date: {(new Date(fight.created_at)).toLocaleString()}</div>
-            <div>Winner: {fight.winner}</div>
-            <div>Looser: {fight.looser}</div>
+            <div>Winner: {fight.winner} ({win_eq})</div>
+            <div>Looser: {fight.looser} ({loose_eq})</div>
         </div>
     }
     render(){

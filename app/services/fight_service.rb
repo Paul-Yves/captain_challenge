@@ -15,7 +15,11 @@ class FightService
       current, opponent = opponent, current
     end
     victor_index = victorious
-    Fight.create(winner: @fighters[victor_index], looser: @fighters[(victor_index+1)%2])
+    winner = @fighters[victor_index]
+    looser = @fighters[(victor_index+1)%2]
+    Fight.create(winner: winner, looser: looser,
+                 win_equipment: winner.equipments.map{|eq|eq.name}.join(', '),
+                 loose_equipment: looser.equipments.map{|eq|eq.name}.join(', '))
     @fighters[victor_index]
   end
 

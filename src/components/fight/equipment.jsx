@@ -16,7 +16,9 @@ const cardSource = {
     endDrag(props, monitor) {
         const item = monitor.getItem();
         const dropResult = monitor.getDropResult();
-        dropResult.fighter.addEquipment(item);
+        if (dropResult && dropResult.fighter){
+            dropResult.fighter.addEquipment(item);
+        }
     },
 };
 

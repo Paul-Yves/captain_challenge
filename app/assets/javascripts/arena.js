@@ -25820,6 +25820,7 @@ var SelectableFighter = function (_FighterCard) {
                 connectDropTarget = _props.connectDropTarget;
 
             var className = this.props.selected ? "fighter-card selected" : "fighter-card";
+            var selectLabel = this.props.selected ? "Unselect" : "Select";
             var total_fights = this.props.victories + this.props.losses;
             var ratio = total_fights === 0 ? 'N/A' : Math.round(100 * this.props.victories / total_fights) + "%";
             return connectDropTarget(_react2.default.createElement(
@@ -25839,7 +25840,7 @@ var SelectableFighter = function (_FighterCard) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'equipment-list' },
                     this.state.equipment.map(function (equipment, idx) {
                         return _react2.default.createElement(
                             'div',
@@ -25860,7 +25861,7 @@ var SelectableFighter = function (_FighterCard) {
                     { onClick: function onClick() {
                             return _this2.props.onSelect();
                         } },
-                    'Select'
+                    selectLabel
                 )
             ));
         }
@@ -25919,50 +25920,58 @@ var History = function (_Component) {
     }
 
     _createClass(History, [{
-        key: "renderFight",
+        key: 'renderFight',
         value: function renderFight(fight) {
+            var win_eq = fight.win_equipment ? fight.win_equipment : 'naked';
+            var loose_eq = fight.loose_equipment ? fight.loose_equipment : 'naked';
             return _react2.default.createElement(
-                "div",
-                { key: fight.id, className: "fight-history" },
+                'div',
+                { key: fight.id, className: 'fight-history' },
                 _react2.default.createElement(
-                    "div",
+                    'div',
                     null,
-                    "Date: ",
+                    'Date: ',
                     new Date(fight.created_at).toLocaleString()
                 ),
                 _react2.default.createElement(
-                    "div",
+                    'div',
                     null,
-                    "Winner: ",
-                    fight.winner
+                    'Winner: ',
+                    fight.winner,
+                    ' (',
+                    win_eq,
+                    ')'
                 ),
                 _react2.default.createElement(
-                    "div",
+                    'div',
                     null,
-                    "Looser: ",
-                    fight.looser
+                    'Looser: ',
+                    fight.looser,
+                    ' (',
+                    loose_eq,
+                    ')'
                 )
             );
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var _this2 = this;
 
             var historyList = this.props.fights.length > 0 ? _react2.default.createElement(
-                "div",
-                { className: "history-list" },
+                'div',
+                { className: 'history-list' },
                 this.props.fights.map(function (fight) {
                     return _this2.renderFight(fight);
                 })
             ) : '';
             return _react2.default.createElement(
-                "div",
-                { className: "history" },
+                'div',
+                { className: 'history' },
                 _react2.default.createElement(
-                    "h2",
+                    'h2',
                     null,
-                    "Fights history"
+                    'Fights history'
                 ),
                 historyList
             );
@@ -34815,7 +34824,9 @@ var cardSource = {
     endDrag: function endDrag(props, monitor) {
         var item = monitor.getItem();
         var dropResult = monitor.getDropResult();
-        dropResult.fighter.addEquipment(item);
+        if (dropResult && dropResult.fighter) {
+            dropResult.fighter.addEquipment(item);
+        }
     }
 };
 
