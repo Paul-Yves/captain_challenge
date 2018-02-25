@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios/index";
-import SelectableFighter from './fighter/selectable_fighter'
+import SelectableFighter from './fighter/selectable_fighter';
+import History from './fight/history';
+
 class FightRoom extends Component{
     constructor(props){
         super(props)
         this.state = {
             fighters: [],
+            fights: [],
             selected: [],
             warning: null
         }
@@ -20,6 +23,16 @@ class FightRoom extends Component{
             .then(function (response) {
                 const data = response.data;
                 self.setState({fighters: data, selected: []});
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        axios.get('fight/index')
+            .then(function (response) {
+                const data = response.data;
+                console.log(data)
+                self.setState({fights: data});
             })
             .catch(function (error) {
                 console.log(error);
@@ -66,6 +79,7 @@ class FightRoom extends Component{
                 }
             </div>
             <button onClick={()=>this.fight()}>Launch fight</button> <span className="warning">{this.state.warning}</span>
+            <History fights={this.state.fights} />
         </div>
     }
 }

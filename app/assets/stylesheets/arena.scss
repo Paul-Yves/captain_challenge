@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 $background-color: slategrey;
+$background-focus: #98abbb;
 $title-color: #810000;
 $warning-color: red;
 
@@ -69,4 +70,14 @@ div.fighter-editor{
 
 span.warning{
   color: $warning-color;
+}
+
+div.history-list{
+  border: solid black 1px;
+  padding: 0.5em;
+  width: fit-content;
+}
+div.history-list div.fight-history{
+  margin-bottom: 0.5em;
+  background-color: $background-focus;
 }

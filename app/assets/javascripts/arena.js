@@ -25571,6 +25571,10 @@ var _selectable_fighter = __webpack_require__(107);
 
 var _selectable_fighter2 = _interopRequireDefault(_selectable_fighter);
 
+var _history = __webpack_require__(108);
+
+var _history2 = _interopRequireDefault(_history);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25589,6 +25593,7 @@ var FightRoom = function (_Component) {
 
         _this.state = {
             fighters: [],
+            fights: [],
             selected: [],
             warning: null
         };
@@ -25607,6 +25612,14 @@ var FightRoom = function (_Component) {
             _index2.default.get('fighter/index').then(function (response) {
                 var data = response.data;
                 self.setState({ fighters: data, selected: [] });
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            _index2.default.get('fight/index').then(function (response) {
+                var data = response.data;
+                console.log(data);
+                self.setState({ fights: data });
             }).catch(function (error) {
                 console.log(error);
             });
@@ -25672,7 +25685,8 @@ var FightRoom = function (_Component) {
                     "span",
                     { className: "warning" },
                     this.state.warning
-                )
+                ),
+                _react2.default.createElement(_history2.default, { fights: this.state.fights })
             );
         }
     }]);
@@ -25782,6 +25796,95 @@ SelectableFighter.propTypes = {
 };
 
 exports.default = SelectableFighter;
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var History = function (_Component) {
+    _inherits(History, _Component);
+
+    function History() {
+        _classCallCheck(this, History);
+
+        return _possibleConstructorReturn(this, (History.__proto__ || Object.getPrototypeOf(History)).apply(this, arguments));
+    }
+
+    _createClass(History, [{
+        key: "renderFight",
+        value: function renderFight(fight) {
+            return _react2.default.createElement(
+                "div",
+                { key: fight.id, className: "fight-history" },
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    "Date: ",
+                    new Date(fight.created_at).toLocaleString()
+                ),
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    "Winner: ",
+                    fight.winner
+                ),
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    "Looser: ",
+                    fight.looser
+                )
+            );
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                "div",
+                { className: "history" },
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    "Fights history"
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "history-list" },
+                    this.props.fights.map(function (fight) {
+                        return _this2.renderFight(fight);
+                    })
+                )
+            );
+        }
+    }]);
+
+    return History;
+}(_react.Component);
+
+exports.default = History;
 
 /***/ })
 /******/ ]);

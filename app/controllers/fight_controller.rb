@@ -1,5 +1,9 @@
 class FightController < ApplicationController
 
+  def index
+    render json: Fight.includes(:winner, :looser).order(created_at: :desc).all
+  end
+
   def create
     par = fight_params
     fighters = par.map{|fighter| Fighter.find(fighter[:id])}
