@@ -60,6 +60,18 @@ div.fighter-list{
 div.fighter-creation{
   flex: 1 1 initial;
 }
+div.armory{
+  margin-left: 2em;
+  flex: 1 1 initial;
+}
+
+div.equipment{
+  padding: 0.2em;
+  border-radius: 5px;
+  border: solid black 1px;
+  background-color: #964d18;
+  cursor: move;
+}
 
 div.fighter-editor{
   padding: 0.5em;

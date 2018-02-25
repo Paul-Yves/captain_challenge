@@ -9,11 +9,13 @@ class History extends Component{
         </div>
     }
     render(){
-        return <div className="history">
-            <h2>Fights history</h2>
+        const historyList = this.props.fights.length > 0 ?
             <div className="history-list">
                 {this.props.fights.map((fight)=>this.renderFight(fight))}
-            </div>
+            </div> : '';
+        return <div className="history">
+            <h2>Fights history</h2>
+            {historyList}
         </div>
     }
 }

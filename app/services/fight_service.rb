@@ -1,7 +1,7 @@
 class FightService
 
   def initialize(fighters)
-    @fighters = fighters.sort{|a,b| a.speed <=> b.speed}
+    @fighters = fighters.sort{|a,b| a.total_speed <=> b.total_speed}
   end
 
   def perform
@@ -9,8 +9,8 @@ class FightService
     opponent = @fighters[1]
     @fighters.each{|fighter| fighter.reset_current_life}
     until victorious
-      if current.attack_works
-        opponent.life -= current.strength / 10
+      if current.attack_works(opponent.dodge_modifier)
+        opponent.life -= [(current.strength + current.strength_modifier - opponent.toughness)  / 10, 0].max
       end
       current, opponent = opponent, current
     end
