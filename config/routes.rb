@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get 'fight/index'
   post 'fight/', to: 'fight#create'
 
+  get 'equipment/index'
+
   get 'arena/index'
 
   root 'arena#index'

@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180223153254) do
+ActiveRecord::Schema.define(version: 20180225141258) do
+
+  create_table "equipment", force: :cascade do |t|
+    t.string "name"
+    t.integer "hand_slot", default: 0, null: false
+    t.integer "body_slot", default: 0, null: false
+    t.integer "strength", default: 0, null: false
+    t.integer "ability", default: 0, null: false
+    t.integer "dodge", default: 0, null: false
+    t.integer "speed", default: 0, null: false
+    t.integer "toughness", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "fighters", force: :cascade do |t|
     t.string "name"
