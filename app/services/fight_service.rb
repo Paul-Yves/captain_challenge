@@ -10,7 +10,8 @@ class FightService
     @fighters.each{|fighter| fighter.reset_current_life}
     until victorious
       if current.attack_works(opponent.dodge_modifier)
-        opponent.life -= [(current.strength + current.strength_modifier - opponent.toughness)  / 10, 0].max
+        # an attack deals at minimum 1 damage to avoid infinite fights
+        opponent.life -= [(current.strength + current.strength_modifier - opponent.toughness)  / 10, 1].max
       end
       current, opponent = opponent, current
     end

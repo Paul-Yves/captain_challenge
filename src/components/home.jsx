@@ -4,7 +4,7 @@ class Home extends Component{
         return <div>
             <p>This is a super arena where fighters will compete</p>
             <p>Go to the preparation room to create, edit or delete fighters</p>
-            <p>Go to the arena to launch battles</p>
+            <p>Go to the arena to equip fighters and launch battles</p>
         </div>
     }
 }

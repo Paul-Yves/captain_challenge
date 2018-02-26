@@ -2,8 +2,8 @@ class Fighter < ApplicationRecord
   before_create :reset_current_life
   validate :creation_valid, on: :create
 
-  has_many :victories, class_name: 'Fight', foreign_key: 'winner_id'
-  has_many :losses, class_name: 'Fight', foreign_key: 'looser_id'
+  has_many :victories, class_name: 'Fight', foreign_key: 'winner_id', dependent: :delete_all
+  has_many :losses, class_name: 'Fight', foreign_key: 'looser_id', dependent: :delete_all
 
   attr_accessor :equipments # the list of equipment is not persisted since it's only for one fight
 
@@ -11,8 +11,9 @@ class Fighter < ApplicationRecord
     self.life = self.max_life
   end
 
+  # check fighter total ability against enemy dodge, has a minimum of 10% chance to hit
   def attack_works(enemy_dodge)
-    rand(100) <  self.equipments.inject(self.ability){|sum, eq| sum + eq.ability} - enemy_dodge
+    rand(100) <  [self.equipments.inject(self.ability){|sum, eq| sum + eq.ability} - enemy_dodge, 10].max
   end
 
   def equipments

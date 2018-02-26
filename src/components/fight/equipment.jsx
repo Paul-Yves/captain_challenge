@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
 
 /**
@@ -31,10 +32,20 @@ function collect(connect, monitor) {
         isDragging: monitor.isDragging()
     };
 }
+
+/**
+ * Component used as drag source to represent an equipment that fighter can use in fight
+ */
 class Equipment extends Component{
     render(){
         const { isDragging, connectDragSource, name } = this.props;
         return connectDragSource(<div className="equipment">{name}</div>)
     }
 }
+Equipment.propTypes = {
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    hand_slot: PropTypes.number.isRequired,
+    body_slot: PropTypes.number.isRequired
+};
 export default DragSource('EQUIPMENT', cardSource, collect)(Equipment);

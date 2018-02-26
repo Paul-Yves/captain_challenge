@@ -19,6 +19,7 @@ function collect(connect, monitor) {
 
 /**
  * Component to display basic information about a fighter
+ * Also used as drop source to choose equipment for the next fight
  */
 class SelectableFighter extends FighterCard{
     constructor(props){
@@ -26,6 +27,10 @@ class SelectableFighter extends FighterCard{
         this.state = {equipment: []}
     }
 
+    /**
+     * Add equipment if possible to the list of equipment the fighter has (used for combat)
+     * @param {Object} equipment - dict with {id, name, hand_slot, body_slot} keys
+     */
     addEquipment(equipment){
         const hand = this.state.equipment.reduce((hand, eq) => hand + eq.hand_slot, equipment.hand_slot);
         const body = this.state.equipment.reduce((hand, eq) => hand + eq.body_slot, equipment.body_slot);
@@ -34,6 +39,11 @@ class SelectableFighter extends FighterCard{
             this.setState({equipment: equipments});
             this.props.onChangeEquipment(equipments.map((eq)=>eq.id));
         }
+    }
+
+    clearEquipment(){
+        this.setState({equipment: []});
+        this.props.onChangeEquipment([]);
     }
 
     render(){
@@ -51,7 +61,7 @@ class SelectableFighter extends FighterCard{
                     <div className="equipment" key={equipment.id+"_"+idx}>{equipment.name}</div>)
                 }
             </div>
-            <button onClick={()=>this.setState({equipment: []})}>Clear equipment</button>
+            <button onClick={()=>this.clearEquipment()}>Clear equipment</button>
             <button onClick={()=>this.props.onSelect()}>{selectLabel}</button>
         </div>)
     }
