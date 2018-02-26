@@ -5,8 +5,7 @@ class FightController < ApplicationController
   end
 
   def create
-    par = fight_params
-    fighters = par.map do |data|
+    fighters = fight_params.map do |data|
       fighter = Fighter.find(data[:id])
       equipments = (data[:equipment] || []).map{|eq| Equipment.find(eq)}
       fighter.equipments = equipments

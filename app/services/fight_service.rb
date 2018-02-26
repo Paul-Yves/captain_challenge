@@ -1,3 +1,7 @@
+# Service to handle a fight
+# Fighters caracs are modified by their equipment
+# Fighters attack each other by order of speed
+# The first one to reach 0 life loose the fight
 class FightService
 
   def initialize(fighters)
